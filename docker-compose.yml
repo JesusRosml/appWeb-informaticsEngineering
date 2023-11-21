@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  #Esto es una imagen
+  node_server:
+    #Esto es un contenedor
+    container_name: node_server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+      - "5173:5173"
+    #Esto define el servicio o el host
+    #en este caso el host de la BD es:
+    links:
+      - postgres
+    #Aqui hago que los cambios que se hagan en mi local
+    #tambien afecte a mi contenedor
+    volumes:
+      - .:/home/app
+  #Imagen PostgreSQL
+  postgres:
+    #Obtiene la imagen de Docker Hub
+    container_name: PostgreSQL_DB
+    image: postgres:16.1-alpine3.18
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=informatic_admin
+      - POSTGRES_PASSWORD=b31NWYGUR8G
+    volumes:
+      - post-data:/var/lib/postgresql/data
+
+volumes:
+  post-data:  
